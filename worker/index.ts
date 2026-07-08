@@ -71,6 +71,7 @@ app.post("/api/quote", async (context) => {
       }),
     });
 
+    console.log('email response:', emailResponse);
     if (!emailResponse.ok) {
       throw new Error('Failed to forward lead data.');
     }
