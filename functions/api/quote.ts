@@ -1,26 +1,27 @@
 import { EventContext } from "@cloudflare/workers-types";
 
-export async function onRequestPost(context: EventContext) {
+// Replace 'Record<string, never>' with your specific Environment bindings interface if needed
+type MyEnv = {
+  RESEND_API_KEY: string;
+};
+type MyData = Record<string, unknown>;
+
+export async function onRequestPost(context: EventContext<MyEnv, string, MyData>) {
   try {
     const { request, env } = context;
     const body = await request.json();
 
     // 1. Destructure and validate input parameters
-    const { name, email, phone, projectType, bot_honeypot } = body;
+    const { name, email, phone, projectType, bot_honeypot, message } = body as any;
 
     // 2. Anti-spam check: If honeypot is filled, silently reject the bot
-    if (bot_honeypot) {
-      return new Response(JSON.stringify({ success: true, message: 'Spam blocked.' }), { status: 200 });
-    }
+    // if (bot_honeypot) {
+    //   return new Response(JSON.stringify({ success: true, message: 'Spam blocked.' }), { status: 200 });
+    // }
 
     // 3. Strict server-side validation rules
-    if (!name || !email || !projectType) {
+    if (!name || !email || !projectType || !message) {
       return new Response(JSON.stringify({ error: 'Missing required fields.' }), { status: 400 });
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return new Response(JSON.stringify({ error: 'Invalid email address format.' }), { status: 400 });
     }
 
     // 4. Securely transmit lead data to an external provider using Cloudflare Environment Variables
@@ -33,8 +34,8 @@ export async function onRequestPost(context: EventContext) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        from: 'Quotes <leads@yourdomain.com>',
-        to: ['sales@yourdomain.com'],
+        from: 'Quotes <onboarding@resend.dev>',
+        to: ['nietov650+apex@gmail.com'],
         subject: `New Lead: ${name}`,
         html: `<p><strong>Name:</strong> ${name}</p>
                <p><strong>Email:</strong> ${email}</p>

@@ -17,6 +17,8 @@ export default function Contact() {
     projectType: { error: '', isValid: false },
     message: { error: '', isValid: false },
   });
+  const [loading, setLoading] = useState<boolean>(false);
+  const [status, setStatus] = useState<{ type: string, message: string}>({ type: '', message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -63,13 +65,34 @@ export default function Contact() {
         }));
     }
   }
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // Validate all form fields before submitting data to the
     // send email function
     const formInvalid = Object.values(formValidation).some((validationObj) => !validationObj.isValid);
     if (!formInvalid) {
-      console.log('Form submitted:', formData);
+      console.log('Submitting form..');
+      try {
+        // Sends data to the Cloudflare Pages Function endpoint
+        const response = await fetch('/api/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await response.json();
+        console.log('submit quote form result:', result);
+        if (response.ok) {
+          setStatus({ type: 'success', message: 'Quote request submitted successfully!' });
+          setFormData({ name: '', email: '', phone: '', service: '' });
+        } else {
+          setStatus({ type: 'error', message: result.error || 'Submission failed.' });
+        }
+      } catch (err) {
+        setStatus({ type: 'error', message: 'Network error. Please try again later.' });
+      } finally {
+        setLoading(false);
+      }
       alert('Thank you for your message! We will get back to you soon.');
     }
   };
