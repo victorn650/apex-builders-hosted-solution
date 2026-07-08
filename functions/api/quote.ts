@@ -1,4 +1,4 @@
-import { EventContext  } from "@cloudflare/workers-types";
+import { EventContext } from "@cloudflare/workers-types";
 
 // Replace 'Record<string, never>' with your specific Environment bindings interface if needed
 type MyEnv = {
