@@ -1,0 +1,61 @@
+import { EventContext } from "@cloudflare/workers-types";
+
+export async function onRequestPost(context: EventContext) {
+  try {
+    const { request, env } = context;
+    const body = await request.json();
+
+    // 1. Destructure and validate input parameters
+    const { name, email, phone, projectType, bot_honeypot } = body;
+
+    // 2. Anti-spam check: If honeypot is filled, silently reject the bot
+    if (bot_honeypot) {
+      return new Response(JSON.stringify({ success: true, message: 'Spam blocked.' }), { status: 200 });
+    }
+
+    // 3. Strict server-side validation rules
+    if (!name || !email || !projectType) {
+      return new Response(JSON.stringify({ error: 'Missing required fields.' }), { status: 400 });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(JSON.stringify({ error: 'Invalid email address format.' }), { status: 400 });
+    }
+
+    // 4. Securely transmit lead data to an external provider using Cloudflare Environment Variables
+    // Example: Forwarding to a CRM or mailing tool via an API key (e.g., Mailgun, SendGrid, Resend)
+    const externalApiUrl = 'https://resend.com';
+    const emailResponse = await fetch(externalApiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${env.RESEND_API_KEY}`, // Kept strictly private on Cloudflare's servers
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Quotes <leads@yourdomain.com>',
+        to: ['sales@yourdomain.com'],
+        subject: `New Lead: ${name}`,
+        html: `<p><strong>Name:</strong> ${name}</p>
+               <p><strong>Email:</strong> ${email}</p>
+               <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+               <p><strong>Service Requested:</strong> ${projectType}</p>`,
+      }),
+    });
+
+    if (!emailResponse.ok) {
+      throw new Error('Failed to forward lead data.');
+    }
+
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Internal server error processing your quote.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+}
