@@ -17,8 +17,8 @@ export default function Contact() {
     projectType: { error: '', isValid: false },
     message: { error: '', isValid: false },
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [status, setStatus] = useState<{ type: string, message: string}>({ type: '', message: '' });
+  const [,setLoading] = useState<boolean>(false);
+  const [,setStatus] = useState<{ type: string, message: string}>({ type: '', message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
