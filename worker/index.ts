@@ -48,7 +48,7 @@ app.post("/api/quote", async (context) => {
 
     // 3. Strict server-side validation rules
     if (!name || !email || !projectType || !message) {
-      return new Response(JSON.stringify({ error: 'Missing required fields.' }), { status: 400 });
+      return context.json({ success: false, error: "Missing required fields" }, 400);
     }
 
     // 4. Securely transmit lead data to an external provider using Cloudflare Environment Variables
@@ -80,10 +80,12 @@ app.post("/api/quote", async (context) => {
   } catch (error) {
     let errObj = '{}'
     if (error && typeof error === 'object') errObj = JSON.stringify(error);
+    if (error && typeof error === 'string') errObj = error;
     return context.json({ 
       success: false,
       error: "Internal server error processing your quote.",
-      errObj
+      errObj,
+      resendApi: context.env.RESEND_API_KEY
     }, 500);
   }
 
