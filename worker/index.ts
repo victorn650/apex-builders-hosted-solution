@@ -39,7 +39,7 @@ app.post("/api/quote", async (context) => {
     const body = await request.json() as QuoteRequest;
 
     // 1. Destructure and validate input parameters
-    const { name, email, phone, projectType, bot_honeypot, message } = body;
+    const { name, email, phone, projectType, message } = body;
 
     // 2. Anti-spam check: If honeypot is filled, silently reject the bot
     // if (bot_honeypot) {
