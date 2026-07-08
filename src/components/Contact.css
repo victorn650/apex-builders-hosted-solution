@@ -80,6 +80,11 @@
   margin-top: 8px;
 }
 
+.btn-primary-disabled {
+  background-color: var(--color-accent-dimmed);
+  color: var(--color-primary);
+}
+
 .contact-info {
   padding: 40px;
   background-color: var(--color-background-light);

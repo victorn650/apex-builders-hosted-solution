@@ -17,7 +17,7 @@ export default function Contact() {
     projectType: { error: '', isValid: false },
     message: { error: '', isValid: false },
   });
-  const [,setLoading] = useState<boolean>(false);
+  const [loading ,setLoading] = useState<boolean>(false);
   const [,setStatus] = useState<{ type: string, message: string}>({ type: '', message: '' });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -79,12 +79,13 @@ export default function Contact() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-        console.log('response:', response);
+
         const result = await response.json();
         console.log('submit quote form result:', result);
+
         if (response.ok) {
           setStatus({ type: 'success', message: 'Quote request submitted successfully!' });
-          setFormData({ name: '', email: '', phone: '', service: '' });
+          setFormData({ name: '', email: '', phone: '', projectType: '', message: '' });
         } else {
           setStatus({ type: 'error', message: result.error || 'Submission failed.' });
         }
@@ -195,8 +196,11 @@ export default function Contact() {
                 }
               </div>
               
-              <button type="submit" className="btn btn-primary submit-btn">
-                Send Message
+              <button
+                type="submit"
+                className={`btn submit-btn ${loading ? 'btn-primary-dimmed' : 'btn-primary'}`}
+                disabled={loading}>
+                  Send Message
               </button>
             </form>
           </div>
