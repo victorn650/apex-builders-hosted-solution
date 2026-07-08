@@ -2,6 +2,7 @@ import { Hono } from "hono";
 
 type Bindings = {
   RESEND_API_KEY: string;
+  MAIL_API_URL: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -53,7 +54,7 @@ app.post("/api/quote", async (context) => {
 
     // 4. Securely transmit lead data to an external provider using Cloudflare Environment Variables
     // Example: Forwarding to a CRM or mailing tool via an API key (e.g., Mailgun, SendGrid, Resend)
-    const externalApiUrl = 'https://resend.com';
+    const externalApiUrl = env.MAIL_API_URL;
     const emailResponse = await fetch(externalApiUrl, {
       method: 'POST',
       headers: {
@@ -62,16 +63,16 @@ app.post("/api/quote", async (context) => {
       },
       body: JSON.stringify({
         from: 'Quotes <onboarding@resend.dev>',
-        to: ['nietov650+apex@gmail.com'],
+        to: ['nietov650@gmail.com'],
         subject: `New Lead: ${name}`,
         html: `<p><strong>Name:</strong> ${name}</p>
                <p><strong>Email:</strong> ${email}</p>
                <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-               <p><strong>Service Requested:</strong> ${projectType}</p>`,
+               <p><strong>Service Requested:</strong> ${projectType}</p>
+               <p><strong>Message:</strong> ${message}</p>`,
       }),
     });
-
-    console.log('email response:', emailResponse);
+    
     if (!emailResponse.ok) {
       throw new Error('Failed to forward lead data.');
     }
@@ -86,7 +87,7 @@ app.post("/api/quote", async (context) => {
       success: false,
       error: "Internal server error processing your quote.",
       errObj,
-      resendApi: context.env.RESEND_API_KEY
+      var: context.env.RESEND_API_KEY
     }, 500);
   }
 
