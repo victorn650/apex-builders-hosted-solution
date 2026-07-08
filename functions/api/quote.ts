@@ -1,18 +1,28 @@
-import { EventContext } from "@cloudflare/workers-types";
+import { EventContext  } from "@cloudflare/workers-types";
 
 // Replace 'Record<string, never>' with your specific Environment bindings interface if needed
 type MyEnv = {
   RESEND_API_KEY: string;
 };
+
 type MyData = Record<string, unknown>;
+
+interface QuoteRequest {
+  name: string;
+  email: string;
+  phone: string;
+  projectType: string;
+  message: string;
+  bot_honeypot?: string;
+};
 
 export async function onRequestPost(context: EventContext<MyEnv, string, MyData>) {
   try {
     const { request, env } = context;
-    const body = await request.json();
+    const body = await request.json() as QuoteRequest;
 
     // 1. Destructure and validate input parameters
-    const { name, email, phone, projectType, bot_honeypot, message } = body as any;
+    const { name, email, phone, projectType, bot_honeypot, message } = body;
 
     // 2. Anti-spam check: If honeypot is filled, silently reject the bot
     // if (bot_honeypot) {

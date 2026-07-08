@@ -79,7 +79,7 @@ export default function Contact() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-
+        console.log('response:', response);
         const result = await response.json();
         console.log('submit quote form result:', result);
         if (response.ok) {

@@ -2,7 +2,7 @@ export default {
   fetch(request) {
     const url = new URL(request.url);
 
-    if (url.pathname.startsWith("/api/")) {
+    if (url.pathname.startsWith("/api/worker")) {
       return Response.json({
         name: "Cloudflare",
       });
