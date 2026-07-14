@@ -1,4 +1,7 @@
 import { Hono } from "hono";
+import { Resend } from "resend";
+// @ts-ignore
+import { ServiceInquireEmail } from "../src/emails/ServiceInquire.tsx";
 
 type Bindings = {
   RESEND_API_KEY: string;
@@ -54,40 +57,24 @@ app.post("/api/quote", async (context) => {
 
     // 4. Securely transmit lead data to an external provider using Cloudflare Environment Variables
     // Example: Forwarding to a CRM or mailing tool via an API key (e.g., Mailgun, SendGrid, Resend)
-    const externalApiUrl = env.MAIL_API_URL;
-    const emailResponse = await fetch(externalApiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.RESEND_API_KEY}`, // Kept strictly private on Cloudflare's servers
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'Quotes <onboarding@resend.dev>',
-        to: ['nietov650@gmail.com'],
-        subject: `New Lead: ${name}`,
-        html: `<p><strong>Name:</strong> ${name}</p>
-               <p><strong>Email:</strong> ${email}</p>
-               <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
-               <p><strong>Service Requested:</strong> ${projectType}</p>
-               <p><strong>Message:</strong> ${message}</p>`,
-      }),
+    const resend = new Resend(env.RESEND_API_KEY);
+    const { error } = await resend.emails.send({
+      from: 'Quotes <onboarding@resend.dev>',
+      to: ['nietov650@gmail.com'],
+      subject: `New Lead: ${name}`,
+      react: ServiceInquireEmail({ name, email, phone, projectType, message })
     });
-    
-    if (!emailResponse.ok) {
-      throw new Error('Failed to forward lead data.');
+
+    if (error) {
+      throw new Error(`Failed to forward lead data with error code: ${error.statusCode} - ${error.message}`);
     }
 
     return context.json({ success: true, message: "Email sent successfully" });
 
   } catch (error) {
-    let errObj = '{}'
-    if (error && typeof error === 'object') errObj = JSON.stringify(error);
-    if (error && typeof error === 'string') errObj = error;
     return context.json({ 
       success: false,
-      error: "Internal server error processing your quote.",
-      errObj,
-      var: context.env.RESEND_API_KEY
+      error: "Internal server error processing your quote."
     }, 500);
   }
 

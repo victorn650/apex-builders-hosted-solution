@@ -9,16 +9,20 @@
     "lint": "oxlint",
     "preview": "npm run build && vite preview",
     "deploy": "npm run build && wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "cf-typegen": "wrangler types",
+    "email": "email dev --dir src/emails"
   },
   "dependencies": {
     "hono": "^4.12.28",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "react-email": "6.7.0",
+    "resend": "^6.17.2"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.43.2",
     "@cloudflare/workers-types": "^5.20260708.1",
+    "@react-email/ui": "6.7.0",
     "@types/node": "^24.13.2",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
