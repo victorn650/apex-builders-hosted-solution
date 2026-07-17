@@ -43,15 +43,13 @@ export const ServiceInquireEmail = ({ name, email, projectType, message, phone }
                 },
                 }}
             >
+                <Img
+                    src="https://apex-builders-hosted-solution.revupdesigns.workers.dev/apex-logo-2.png"
+                    alt="Apex"
+                    className="mx-auto mt-5 mb-5 max-w-100 h-auto"
+                />
                 <Body className="bg-offwhite font-serif">
                     <Preview>Apex Builders Service Inquiry</Preview>
-                    <Img
-                        src="/apex-logo.png"
-                        width="184"
-                        height="75"
-                        alt="Apex"
-                        className="mx-auto my-20"
-                    />
                     <Container className="bg-white p-45">
                         <Section className="bg-brand h-2">
                            <Heading className="my-8 text-center leading-8 text-white ">
@@ -96,3 +94,5 @@ ServiceInquireEmail.defaultProps = {
     projectType: 'commercial',
     message: 'We want to remove the carpet floors in our building and switch to wood flooring'
 };
+
+export default ServiceInquireEmail;
