@@ -3,5 +3,5 @@ export const REGEX = {
     EMAIL: /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/,
     PHONE: /^\+?1?[. -]?\(?\d{3}\)?[. -]?\d{3}[. -]?\d{4}$/,
     PROJECTTYPE: /^[A-Za-z]{1,15}$/,
-    MESSAGE: /^[A-Za-z \(\)\?]{1,300}$/
+    MESSAGE: /^[A-Za-z0-9 \(\)\?.]{1,300}$/
 }
