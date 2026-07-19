@@ -6,7 +6,7 @@ interface IToastMessageProps {
     onDismiss: Function;
 };
 
-export default function ToastMessage({ type, message, onDismiss }: IToastMessageProps) {
+export default function ToastMessage({ message, onDismiss }: IToastMessageProps) {
     
     return (
         <div className={`toast-container`} id="toastContainer">
