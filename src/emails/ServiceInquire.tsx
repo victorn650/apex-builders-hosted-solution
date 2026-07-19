@@ -48,38 +48,41 @@ export const ServiceInquireEmail = ({ name, email, projectType, message, phone }
                     alt="Apex"
                     className="mx-auto mt-5 mb-5 max-w-100 h-auto"
                 />
-                <Body className="bg-offwhite font-serif">
+                <Body className="bg-offwhite font-serif mb-20">
                     <Preview>Apex Builders Service Inquiry</Preview>
-                    <Container className="bg-white p-45">
+                    <Container className="bg-white">
                         <Section className="bg-brand h-2">
-                           <Heading className="my-8 text-center leading-8 text-white ">
+                            <Heading className="my-8 text-center leading-8 text-white">
                                 Service Inquiry
                             </Heading>
                         </Section>
-                        <Section className="text-brand">
-                            <Row className="">
-                                <Text>
-                                    {name}
-                                    <br />
-                                    {email}
-                                    <br />
-                                    {phone}
-                                </Text>
-                            </Row>
-                            <Row>
-                                <Text className="text-lg">
-                                    {name} is inquiring about a {projectType} project:
-                                </Text>
-                                <Text className="text-lg">
-                                    "{message}"
-                                </Text>
-                                <Button
-                                    className="bg-accent font-15 font-inter text-fg-inverted inline-block border-none px-5 py-3.5 text-center text-brand cursor-pointer"
-                                >
-                                    Reply to {name}
-                                </Button>
-                            </Row>
-                        </Section>
+                        <Container className="p-30">
+                            <Section className="text-brand">
+                                <Row className="">
+                                    <Text>
+                                        {name}
+                                        <br />
+                                        {email}
+                                        <br />
+                                        {phone}
+                                    </Text>
+                                </Row>
+                                <Row>
+                                    <Text className="text-lg">
+                                        {name} is inquiring about a {projectType} project:
+                                    </Text>
+                                    <Text className="text-lg">
+                                        "{message}"
+                                    </Text>
+                                    <Button
+                                        className="bg-accent font-15 font-inter text-fg-inverted inline-block border-none px-5 py-3.5 text-center text-brand cursor-pointer"
+                                    >
+                                        Reply to {name}
+                                    </Button>
+                                </Row>
+                            </Section>
+                        </Container>
+                        
                     </Container>
                 </Body>
             </Tailwind>
