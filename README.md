@@ -1,3 +1,9 @@
+# Apex Builders Landing Page
+
+> **Note:** This repository contains a landing page for **Apex Builders**, a construction company. The site is hosted on **Cloudflare Pages**.
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
