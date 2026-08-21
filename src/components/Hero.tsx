@@ -1,20 +1,23 @@
+import { useLanguage } from '../context/LanguageContext';
 import './Hero.css';
 
 export default function Hero() {
+  const { t } = useLanguage();
+  
   return (
     <section id="home" className="hero">
       <div className="hero-overlay"></div>
       <div className="hero-content">
-        <h1 className="hero-title">Building Tomorrow's Landmarks Today</h1>
+        <h1 className="hero-title">{t('hero.title')}</h1>
         <p className="hero-subtitle">
-          Award-winning construction company delivering excellence across residential, commercial, and renovation projects.
+          {t('hero.subtitle')}
         </p>
         <div className="hero-actions">
           <a href="#contact" className="btn btn-primary hero-cta">
-            Get a Quote
+            {t('hero.cta')}
           </a>
           <a href="#projects" className="hero-secondary">
-            View Our Work
+            {t('hero.viewWork')}
             <span className="underline"></span>
           </a>
         </div>

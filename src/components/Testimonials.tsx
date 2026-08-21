@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import './Testimonials.css';
 
 const testimonials = [
   {
-    quote: "Apex Builders transformed our vision into reality. Their professionalism and attention to detail were exceptional from start to finish.",
+    quoteKey: 'testimonials.quote1',
     author: 'Sarah Mitchell',
     company: 'CEO of Mitchell Realty',
   },
   {
-    quote: "Working with Apex Builders was a dream come true. They delivered our project on time and exceeded our expectations in every way.",
+    quoteKey: 'testimonials.quote2',
     author: 'Robert Chen',
     company: 'Property Developer',
   },
   {
-    quote: "The team's expertise and dedication made our renovation process seamless. We couldn't be happier with the results.",
+    quoteKey: 'testimonials.quote3',
     author: 'Emily Johnson',
     company: 'Homeowner',
   },
@@ -21,6 +21,7 @@ const testimonials = [
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
+  const { t } = useLanguage();
 
   const next = () => setCurrent((current + 1) % testimonials.length);
   const prev = () => setCurrent((current - 1 + testimonials.length) % testimonials.length);
@@ -29,21 +30,21 @@ export default function Testimonials() {
     <section className="testimonials section">
       <div className="container">
         <div className="testimonial-carousel">
-          <button className="carousel-btn prev" onClick={prev} aria-label="Previous">
+          <button className="carousel-btn prev" onClick={prev} aria-label={t('testimonials.prev')}>
             ←
           </button>
           
           <div className="testimonial-content">
             <span className="quote-mark">"</span>
             <blockquote className="testimonial-quote">
-              {testimonials[current].quote}
+              {t(testimonials[current].quoteKey)}
             </blockquote>
             <cite className="testimonial-author">
               — {testimonials[current].author}, {testimonials[current].company}
             </cite>
           </div>
           
-          <button className="carousel-btn next" onClick={next} aria-label="Next">
+          <button className="carousel-btn next" onClick={next} aria-label={t('testimonials.next')}>
             →
           </button>
         </div>
@@ -54,7 +55,7 @@ export default function Testimonials() {
               key={index}
               className={`dot ${index === current ? 'active' : ''}`}
               onClick={() => setCurrent(index)}
-              aria-label={`Go to slide ${index + 1}`}
+              aria-label={t('testimonials.goToSlide')}
             />
           ))}
         </div>

@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 import './Contact.css';
 import { REGEX } from '../utils/regexString';
 import ToastMessage from './Toast';
 
 export default function Contact() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<{ [key: string]: string}>({
     name: '',
     email: '',
@@ -36,9 +37,6 @@ export default function Contact() {
   const validateFormInput = (field: string) => {
     if (field && formData[field]) {
       let errorMsg = ''
-      // validate that the form data that was input by the user is valid and does not
-      // contain prohibited characters. Data must not contain any invalid characters if it is
-      // to be sent to email function
       switch (field) {
         case 'name':
           if (!REGEX.NAME.test(formData.name)) {
@@ -77,13 +75,10 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Validate all form fields before submitting data to the
-    // send email function
     const formInvalid = Object.values(formValidation).some((validationObj) => !validationObj.isValid);
     if (!formInvalid) {
       console.log('Submitting form..');
       try {
-        // Sends data to the Cloudflare Pages Function endpoint
         const response = await fetch('/api/quote', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -123,17 +118,16 @@ export default function Contact() {
         <div className="container">
           <div className="contact-grid">
             <div className="contact-form-wrapper">
-              <h2 className="section-title">Get In Touch</h2>
-              <p className="section-subtitle">Fill out the form below and we'll be in touch.</p>
+              <h2 className="section-title">{t('contact.title')}</h2>
+              <p className="section-subtitle">{t('contact.subtitle')}</p>
               
               <form className="contact-form" onSubmit={handleSubmit}>
-                {/* Honeypot field to trick spam bots - hidden from real users */}
                 <div style={{ display: 'none' }} aria-hidden="true">
                   <input type="text" name="bot_honeypot" tabIndex={-1} autoComplete="off" />
                 </div>
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="name">Full Name</label>
+                    <label htmlFor="name">{t('contact.fullName')}</label>
                     <input
                       type="text"
                       id="name"
@@ -149,7 +143,7 @@ export default function Contact() {
                   </div>
                   
                   <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">{t('contact.email')}</label>
                     <input
                       type="email"
                       id="email"
@@ -167,7 +161,7 @@ export default function Contact() {
                 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="phone">Phone</label>
+                    <label htmlFor="phone">{t('contact.phone')}</label>
                     <input
                       type="tel"
                       id="phone"
@@ -182,7 +176,7 @@ export default function Contact() {
                   </div>
                   
                   <div className="form-group">
-                    <label htmlFor="projectType">Project Type</label>
+                    <label htmlFor="projectType">{t('contact.projectType')}</label>
                     <select
                       id="projectType"
                       name="projectType"
@@ -191,17 +185,17 @@ export default function Contact() {
                       onBlur={() => validateFormInput('projectType')}
                       required
                     >
-                      <option value="">Select a project type</option>
-                      <option value="residential">Residential</option>
-                      <option value="commercial">Commercial</option>
-                      <option value="renovation">Renovation</option>
-                      <option value="other">Other</option>
+                      <option value="">{t('contact.selectProject')}</option>
+                      <option value="residential">{t('contact.project.residential')}</option>
+                      <option value="commercial">{t('contact.project.commercial')}</option>
+                      <option value="renovation">{t('contact.project.renovation')}</option>
+                      <option value="other">{t('contact.project.other')}</option>
                     </select>
                   </div>
                 </div>
                 
                 <div className="form-group">
-                  <label htmlFor="message">Message</label>
+                  <label htmlFor="message">{t('contact.message')}</label>
                   <textarea
                     id="message"
                     name="message"
@@ -220,37 +214,37 @@ export default function Contact() {
                   type="submit"
                   className={`btn submit-btn ${loading ? 'btn-primary-dimmed' : 'btn-primary'}`}
                   disabled={loading}>
-                    Send Message
+                    {t('contact.send')}
                 </button>
               </form>
             </div>
             
             <div className="contact-info">
-              <h2 className="contact-heading">Let's Build Something Great</h2>
+              <h2 className="contact-heading">{t('contact.heading')}</h2>
               <p className="contact-intro">
-                Ready to start your project? Get in touch for a free consultation.
+                {t('contact.intro')}
               </p>
               
               <div className="contact-details">
                 <div className="contact-item">
                   <span className="contact-icon">📞</span>
-                  <span>(555) 123-4567</span>
+                  <span>{t('contact.phoneNum')}</span>
                 </div>
                 
                 <div className="contact-item">
                   <span className="contact-icon">📧</span>
-                  <span>info@apexbuilders.com</span>
+                  <span>{t('contact.emailAddr')}</span>
                 </div>
                 
                 <div className="contact-item">
                   <span className="contact-icon">📍</span>
-                  <span>1250 Construction Ave, Suite 400<br />Denver, CO 80202</span>
+                  <span>{t('contact.address')}</span>
                 </div>
               </div>
               
               <div className="contact-hours">
-                <h4>Office Hours</h4>
-                <p>Mon–Fri: 8:00 AM – 6:00 PM</p>
+                <h4>{t('contact.hoursTitle')}</h4>
+                <p>{t('contact.hours')}</p>
               </div>
             </div>
           </div>
