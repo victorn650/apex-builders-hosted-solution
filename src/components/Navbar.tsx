@@ -1,15 +1,9 @@
 import { useState, useEffect } from 'react';
 import './Navbar.css';
-
-const navLinks = [
-  { name: 'Home', href: '#home' },
-  { name: 'Services', href: '#services' },
-  { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Contact', href: '#contact' },
-];
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar() {
+  const { language, setLanguage, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -38,18 +32,34 @@ export default function Navbar() {
         </button>
 
         <ul className={`navbar-links ${menuOpen ? 'open' : ''}`}>
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <a href={link.href} onClick={() => setMenuOpen(false)}>
-                {link.name}
-              </a>
-            </li>
-          ))}
+          <li><a href="#home" onClick={() => setMenuOpen(false)}>{t('nav.home')}</a></li>
+          <li><a href="#services" onClick={() => setMenuOpen(false)}>{t('nav.services')}</a></li>
+          <li><a href="#about" onClick={() => setMenuOpen(false)}>{t('nav.about')}</a></li>
+          <li><a href="#projects" onClick={() => setMenuOpen(false)}>{t('nav.projects')}</a></li>
+          <li><a href="#contact" onClick={() => setMenuOpen(false)}>{t('nav.contact')}</a></li>
         </ul>
 
-        <a href="#contact" className="navbar-cta btn" onClick={() => setMenuOpen(false)}>
-          Get a Quote
-        </a>
+        <div className="navbar-right">
+          <a href="#contact" className="navbar-cta btn" onClick={() => setMenuOpen(false)}>
+            {t('hero.cta')}
+          </a>
+          <div className="lang-toggle">
+            <button 
+              className={`lang-btn ${language === 'en' ? 'active' : ''}`}
+              onClick={() => setLanguage('en')}
+              aria-label="English"
+            >
+              EN
+            </button>
+            <button 
+              className={`lang-btn ${language === 'es' ? 'active' : ''}`}
+              onClick={() => setLanguage('es')}
+              aria-label="Spanish"
+            >
+              ES
+            </button>
+          </div>
+        </div>
       </div>
     </nav>
   );
