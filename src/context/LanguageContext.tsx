@@ -1,4 +1,6 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import en from '../i18n/en.json';
+import es from '../i18n/es.json';
 
 type Language = 'en' | 'es';
 
@@ -11,8 +13,8 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const translations: Record<Language, Record<string, string>> = {
-  en: require('../i18n/en.json'),
-  es: require('../i18n/es.json'),
+  en,
+  es,
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {

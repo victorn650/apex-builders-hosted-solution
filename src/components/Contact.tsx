@@ -2,6 +2,7 @@ import { useLanguage } from '../context/LanguageContext';
 import './Contact.css';
 import { REGEX } from '../utils/regexString';
 import ToastMessage from './Toast';
+import { useEffect, useState } from 'react';
 
 export default function Contact() {
   const { t } = useLanguage();
