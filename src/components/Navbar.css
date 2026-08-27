@@ -176,6 +176,10 @@
 }
 
 @media (max-width: 768px) {
+  .navbar-container {
+    padding: 0 16px;
+  }
+
   .navbar-toggle {
     display: block;
   }
@@ -206,7 +210,25 @@
     display: none;
   }
 
+  .navbar-right {
+    margin-left: auto;
+    gap: 12px;
+  }
+
   .lang-toggle {
-    display: none;
+    display: flex;
+  }
+
+  .lang-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  .logo-text {
+    font-size: 22px;
+  }
+
+  .logo-accent {
+    width: 30px;
   }
 }
